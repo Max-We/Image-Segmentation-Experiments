@@ -161,9 +161,10 @@ def detect_objects_yolo(img):
     Uses YOLOv3 to detect objects in an image
     Adapted from: https://opencv-tutorial.readthedocs.io/en/latest/yolo/yolo.html
     """
-    if not os.path.exists('yolo/yolov3.weights'):
+    if not os.path.exists('./yolo/yolov3.weights'):
         print("Please download yolov3.weights from https://pjreddie.com/media/files/yolov3.weights "
               "and place them under the ./yolo folder")
+        return
 
     # Load names of classes and get random colors
     classes = open('yolo/coco.names').read().strip().split('\n')
