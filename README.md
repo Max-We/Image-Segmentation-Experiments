@@ -2,6 +2,8 @@
 
 This projects implements a few algorithms and neural networks to detect objects in an image using OpenCV and YOLO.
 
+![demo showcasing various commands](demo-video.gif)
+
 The following commands are at your disposal:
 
 ```text

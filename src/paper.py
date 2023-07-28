@@ -9,16 +9,16 @@ def detect_paper_cv2(img):
     """
     # 1. Detect paper corners
     corners, thresh_img, morph_img = find_paper_corners(img)
-    cv2.imwrite("./output/paper_thresh.jpg", thresh_img)
-    cv2.imwrite("./output/paper_morph.jpg", morph_img)
+    cv2.imwrite("../output/paper_thresh.jpg", thresh_img)
+    cv2.imwrite("../output/paper_morph.jpg", morph_img)
 
     # 2. Mark corners visually
     marked_paper_img = mark_paper_edges(corners, img)
-    cv2.imwrite("./output/paper_marked.jpg", marked_paper_img)
+    cv2.imwrite("../output/paper_marked.jpg", marked_paper_img)
 
     # 3. Un-skew img perspective
     rectified_img = rectify_paper_perspective(corners, img)
-    output_file = "./output/paper.jpg"
+    output_file = "../output/paper.jpg"
     cv2.imwrite(output_file, rectified_img)
     print(f"Saved result to {output_file}")
 

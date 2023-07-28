@@ -33,7 +33,7 @@ def detect_aruco_cv2(img):
         print(f"Found {len(np.ravel(rejected))} rejected points, no confirmed points.")
 
     if len(np.ravel(corners)) != 0:
-        output_file = "./output/output.jpg"
+        output_file = "../output/output.jpg"
         print("Saving result...")
         cv2.imwrite(output_file, output_img)
         print(f"Saved result to {output_file}")
@@ -50,7 +50,7 @@ def detect_coins_cv2(img):
     # Pre-process the image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blurred = cv2.medianBlur(gray, 11)
-    cv2.imwrite("./output/coins_pre.jpg", blurred)
+    cv2.imwrite("../output/coins_pre.jpg", blurred)
 
     # Detect circles
     circles = cv2.HoughCircles(blurred, cv2.HOUGH_GRADIENT, 1, minDist=20, param1=100, param2=50, minRadius=1,
@@ -66,7 +66,7 @@ def detect_coins_cv2(img):
             # Perform operations on each circle
             cv2.circle(img, (x, y), r, (0, 255, 0), 2)
 
-    output_file = "./output/coins.jpg"
+    output_file = "../output/coins.jpg"
     cv2.imwrite(output_file, img)
     print(f"Saved result to {output_file}")
 
@@ -106,13 +106,13 @@ def detect_legos_cv2(img):
     """
     # Convert the image to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite("./output/legos_gray.jpg", gray)
+    cv2.imwrite("../output/legos_gray.jpg", gray)
 
     # Threshold -> Blur -> Threshold yields good results:  https://stackoverflow.com/a/57200704
     thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 51, 3)
     blur = cv2.GaussianBlur(thresh, (31, 31), 0)
     thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-    cv2.imwrite("./output/legos_thresh.jpg", thresh)
+    cv2.imwrite("../output/legos_thresh.jpg", thresh)
 
     # Find contours in the binary image
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -151,7 +151,7 @@ def detect_legos_cv2(img):
         if label == most_elements_cluster:
             cv2.drawContours(img, [poly_approximations[i]], 0, (0, 255, 0), 2)
 
-    output_file = "./output/legos.jpg"
+    output_file = "../output/legos.jpg"
     cv2.imwrite(output_file, img)
     print(f"Saved result to {output_file}")
 
@@ -161,7 +161,7 @@ def detect_objects_yolo(img):
     Uses YOLOv3 to detect objects in an image
     Adapted from: https://opencv-tutorial.readthedocs.io/en/latest/yolo/yolo.html
     """
-    if not os.path.exists('./yolo/yolov3.weights'):
+    if not os.path.exists('src/yolo/yolov3.weights'):
         print("Please download yolov3.weights from https://pjreddie.com/media/files/yolov3.weights "
               "and place them under the ./yolo folder")
         return
@@ -281,6 +281,6 @@ def detect_legos_yolo_custom(img):
     output_img = cv2.imdecode(output_img_array, flags=cv2.IMREAD_COLOR)
 
     # Save result as file
-    output_file = "./output/lego-yolo.jpg"
+    output_file = "../output/lego-yolo.jpg"
     cv2.imwrite(output_file, output_img)
     print(f"Saved result to {output_file}")
