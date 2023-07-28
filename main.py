@@ -68,7 +68,7 @@ def detect_legos_nn(input_file):
 @cli.command()
 @click.argument('input_file', type=click.Path(), required=False)
 def detect_objects_nn(input_file):
-    """Detect objects in an image using the standard YOLOv4 neural-net."""
+    """Detect objects in an image using the standard YOLOv3 neural-net."""
     click.echo(f"Detecting objects using YOLO in {input_file}...")
     input_file = input_file if input_file else capture_image()
     img = cv2.imread(input_file)

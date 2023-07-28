@@ -1,15 +1,17 @@
+import base64
+import json
+import os
 import time
 
-import requests
-import json
+import cv2
 import cv2.aruco as aruco
 import numpy as np
-import base64
-import cv2
+import requests
 
 
 def detect_aruco_cv2(img):
     """
+    Detects a marker in an image
     https://stackoverflow.com/questions/74964527/attributeerror-module-cv2-aruco-has-no-attribute-dictionary-get
     """
     # Find a marker
@@ -39,16 +41,16 @@ def detect_aruco_cv2(img):
 
     print("No aruco codes found.")
 
+
 def detect_coins_cv2(img):
     """
     Detects coins in the provided image
-    Based on: https://www.perplexity.ai/search/2937bde1-d6f8-4029-a24e-8ec3e6dc7707?s=c
+    https://www.perplexity.ai/search/2937bde1-d6f8-4029-a24e-8ec3e6dc7707?s=c
     """
     # Pre-process the image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blurred = cv2.medianBlur(gray, 11)
     cv2.imwrite("./output/coins_pre.jpg", blurred)
-
 
     # Detect circles
     circles = cv2.HoughCircles(blurred, cv2.HOUGH_GRADIENT, 1, minDist=20, param1=100, param2=50, minRadius=1,
@@ -67,6 +69,7 @@ def detect_coins_cv2(img):
     output_file = "./output/coins.jpg"
     cv2.imwrite(output_file, img)
     print(f"Saved result to {output_file}")
+
 
 def detect_legos_cv2(img):
     """
@@ -98,11 +101,16 @@ def detect_legos_cv2(img):
     cv2.imwrite(output_file, img)
     print(f"Saved result to {output_file}")
 
+
 def detect_objects_yolo(img):
     """
     Uses YOLOv3 to detect objects in an image
     Adapted from: https://opencv-tutorial.readthedocs.io/en/latest/yolo/yolo.html
     """
+    if not os.path.exists('yolo/yolov3.weights'):
+        print("Please download yolov3.weights from https://pjreddie.com/media/files/yolov3.weights "
+              "and place them under the ./yolo folder")
+
     # Load names of classes and get random colors
     classes = open('yolo/coco.names').read().strip().split('\n')
     np.random.seed(42)
@@ -126,6 +134,7 @@ def detect_objects_yolo(img):
     t0 = time.time()
     outputs = net.forward(ln)
     t = time.time()
+
     # print('time=', t - t0)
 
     # print(len(outputs))
@@ -178,6 +187,7 @@ def detect_objects_yolo(img):
     cv2.imwrite(output_file, img)
     print(f"Saved result to {output_file}")
 
+
 def detect_legos_yolo_custom(img):
     """
     Uses a custom trained YOLO network to detect lego bricks in an image
@@ -204,7 +214,7 @@ def detect_legos_yolo_custom(img):
     payload = {
         "data": [
             img_format + base64_img.decode('utf-8'),
-            "zero-shot-1000-single-class" # this is the only trained model atm
+            "zero-shot-1000-single-class"  # this is the only trained model atm
         ]
     }
     headers = {'Content-Type': 'application/json'}
