@@ -17,7 +17,6 @@ def cli():
 @click.argument('input_file', type=click.Path(), required=False)
 def detect_aruco(input_file):
     """Detect ArUco markers in an image."""
-    # Implementation goes here
     click.echo(f"Detecting ArUco markers in {input_file}...")
     input_file = input_file if input_file else capture_image()
     img = cv2.imread(input_file)
